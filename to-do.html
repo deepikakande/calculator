@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .task-form input, .task-form select {
+      padding: 10px;
+      margin: 5px;
+    }
+    .task-list {
+      margin-top: 20px;
+    }
+    .task {
+      background: #fff;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    .btn {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>To-Do List</h1>
+
+  <div class="task-form">
+    <input type="text" id="title" placeholder="Task Title" />
+    <input type="text" id="description" placeholder="Description" />
+    <select id="priority">
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+    <select id="category">
+      <option value="Work">Work</option>
+      <option value="Personal">Personal</option>
+    </select>
+    <input type="date" id="dueDate" />
+    <button onclick="addTask()">Add Task</button>
+  </div>
+
+  <div class="task-list" id="taskList"></div>
+
+  <script>
+    let tasks = [];
+
+    function addTask() {
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const priority = document.getElementById('priority').value;
+      const category = document.getElementById('category').value;
+      const dueDate = document.getElementById('dueDate').value;
+
+      const task = {
+        id: Date.now(),
+        title,
+        description,
+        priority,
+        category,
+        dueDate,
+        completed: false
+      };
+      tasks.push(task);
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+      tasks.forEach(task => {
+        taskList.innerHTML += `
+          <div class="task ${task.completed ? 'completed' : ''}" id="task-${task.id}">
+            <strong>${task.title}</strong> (${task.priority})<br/>
+            <small>${task.category} | Due: ${task.dueDate}</small><br/>
+            ${task.description}<br/>
+            <button class="btn" onclick="toggleComplete(${task.id})">✔</button>
+            <button class="btn" onclick="editTask(${task.id})">✏️</button>
+            <button class="btn" onclick="deleteTask(${task.id})">🗑️</button>
+          </div>
+        `;
+      });
+    }
+
+    function toggleComplete(id) {
+      tasks = tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task);
+      renderTasks();
+    }
+
+    function editTask(id) {
+      const task = tasks.find(t => t.id === id);
+      document.getElementById('title').value = task.title;
+      document.getElementById('description').value = task.description;
+      document.getElementById('priority').value = task.priority;
+      document.getElementById('category').value = task.category;
+      document.getElementById('dueDate').value = task.dueDate;
+      deleteTask(id);
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(task => task.id !== id);
+      renderTasks();
+    }
+  </script>
+</body>
+</html>
