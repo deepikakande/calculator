@@ -65,6 +65,6 @@ This project presents a full-stack data analytics pipeline focused on **Amazon S
 
 ## 👤 Author
 
-**Neeraj Velpula**  
-📧 neeraj.velpula.dev@gmail.com  
+**KANDE DEEPIKA**  
+📧 deepikamohan030@gmail.com  
 🌍 India
